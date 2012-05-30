@@ -34,10 +34,10 @@
 (defn embed-last-rule [history]
   (when (> (count history) 1)
     (let [[current prev] history
-          prev-pattern   (Pattern/compile (Pattern/quote prev))]
-      [(s/replace current
-                    prev-pattern
-                    "!!")])))
+          prev-pattern   (Pattern/compile (Pattern/quote prev))
+          embedded       (s/replace current prev-pattern "!!")]
+      (when (< (count embedded) (count current))
+      [embedded]))))
 
 (defn replace-string-rule [history]
   (when (> (count history) 1) ; FIXME: duplication on current-prev pattern
