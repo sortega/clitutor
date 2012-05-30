@@ -9,5 +9,5 @@
                  [com.stuartsierra/lazytest "1.2.3"]
                  [commons-io/commons-io "2.3"]
                  [lumiere "1.0.0-SNAPSHOT"]]
-  :dev-dependencies [[lein-midje "1.0.9"]])
-
+  :dev-dependencies [[lein-midje "1.0.9"]]
+  :repositories {"stuart" "http://stuartsierra.com/maven2"})
