@@ -1,5 +1,6 @@
 (ns clitutor.core
   (:use [lumiere])
+  (:use [clitutor.logic :only [minimal-replacement]])
   (:require [clojure.string :as s])
   (:import [org.apache.commons.io.input Tailer TailerListener])
   (:import [java.util.regex Pattern])
@@ -12,6 +13,7 @@
   (Tailer. (File. path)
            (reify TailerListener
              (init [_ _])
+             (^void handle [_ ^Exception line])
              (^void handle [_ ^String line]
                (line-handler line)))
            100 true))
@@ -41,8 +43,11 @@
 
 (defn replace-string-rule [history]
   (when (> (count history) 1) ; FIXME: duplication on current-prev pattern
-    (let [[current prev] history]
-      )))
+    (let [[current prev] history
+          [old new]      (minimal-replacement prev current)
+          keystrokes     (+ 2 (count old) (count new))]
+        (when (< keystrokes (count current))
+          [(str "^" old "^" new)]))))
 
 (defn -main
   "Give hints on a history file"
